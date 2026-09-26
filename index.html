@@ -22,7 +22,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1;display:block;}
   box-shadow:0 0 60px 14px rgba(240,200,105,.45);z-index:1;opacity:.9;}
 #stage{position:relative;z-index:5;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 
-#btn{position:relative;border:none;cursor:pointer;font-family:inherit;
+#btn{position:relative;z-index:20;border:none;cursor:pointer;pointer-events:auto;font-family:inherit;
   padding:20px 3rem;font-size:clamp(1rem,4.5vw,1.35rem);letter-spacing:.5px;color:#3c1f2a;
   border-radius:60px;background:linear-gradient(120deg,var(--gold),#fff1cf,var(--gold));
   background-size:220% auto;box-shadow:0 0 0 0 rgba(240,200,105,.55),0 14px 34px rgba(0,0,0,.45);
@@ -30,11 +30,31 @@ canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1;display:block;}
 @keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(240,200,105,.55),0 14px 34px rgba(0,0,0,.45);}50%{box-shadow:0 0 0 16px rgba(240,200,105,0),0 14px 34px rgba(0,0,0,.45);}}
 @keyframes shimmer{to{background-position:220% center;}}
 
-#msgWrap{position:absolute;top:9%;left:50%;transform:translateX(-50%) translateY(-16px);
+#msgWrap{position:absolute;top:6%;left:50%;transform:translateX(-50%) translateY(-16px);
   text-align:center;z-index:6;opacity:0;width:92%;}
 #msg{font-size:clamp(1.9rem,7vw,3.2rem);color:#fff5f0;font-style:italic;
   text-shadow:0 0 26px rgba(240,150,180,.65),0 2px 8px rgba(0,0,0,.4);}
 #msg .accent{color:var(--gold);font-style:normal;font-weight:bold;}
+#poem{
+  margin:14px auto 0;
+  width:min(92vw,680px);
+  padding:14px 18px 16px;
+  color:rgba(255,245,240,.94);
+  font-size:clamp(.92rem,3.7vw,1.12rem);
+  line-height:1.5;
+  font-style:italic;
+  letter-spacing:.01em;
+  text-shadow:0 1px 5px rgba(0,0,0,.42);
+  border-top:1px solid rgba(240,200,105,.42);
+  border-bottom:1px solid rgba(240,200,105,.22);
+  background:linear-gradient(to bottom,rgba(38,18,35,.28),rgba(38,18,35,.08));
+}
+#poem span{display:block;}
+#poem .last{margin-top:5px;color:#f6d889;font-style:normal;font-weight:600;}
+@media (max-width:480px){
+  #poem{margin-top:10px;padding:11px 8px 13px;font-size:clamp(.80rem,3.55vw,.96rem);line-height:1.42;}
+}
+
 
 #garden{position:absolute;bottom:0;left:0;width:100%;height:60vh;z-index:3;pointer-events:none;}
 .fl{position:absolute;bottom:0;opacity:0;transform-origin:bottom center;left:0;}
@@ -57,9 +77,9 @@ canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1;display:block;}
 
 .ground{position:absolute;bottom:0;left:0;width:100%;height:8vh;z-index:2;background:linear-gradient(to top,rgba(15,8,20,.9),transparent);}
 @media (max-width:480px){
-  #garden{height:56vh;}
+  #garden{height:66vh;}
   .moon{width:46px;height:46px;top:4%;right:8%;}
-  #msgWrap{top:7%;}
+  #msgWrap{top:5.5%;width:94%;}
 }
 @media (max-height:700px){
   #garden{height:48vh;}
@@ -74,7 +94,19 @@ canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1;display:block;}
 
 <div id="stage">
   <button id="btn">Deschide ✨</button>
-  <div id="msgWrap"><div id="msg">Pentru <span class="accent">Ionela</span> 🌷</div></div>
+  <div id="msgWrap">
+    <div id="msg">Pentru <span class="accent">Ionela</span> 🌷</div>
+    <div id="poem" aria-label="Poezie pentru Ionela">
+      <span>În ochii tăi sunt imaginație,</span>
+      <span>Pe sol nebun, pe aer de creație,</span>
+      <span>Vocala din vibrație...</span>
+      <span>Efemeră tu pentr-o declarație,</span>
+      <span>Pe criteriu spus cu intonație,</span>
+      <span>De moftul tău, eu fac abstracție.</span>
+      <span>Tot ce atingi în jur, ce simți e fin,</span>
+      <span class="last">Pur și simplu sunt farin.</span>
+    </div>
+  </div>
   <div id="garden">
 <div class="fl back" style="width:10vw;left:3%;--i:0"><svg viewBox="0 0 110 300" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="f0-stem" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#3c7248"/><stop offset="100%" stop-color="#7fbf87"/></linearGradient><linearGradient id="f0-l1" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#3f7a4c"/><stop offset="100%" stop-color="#8fd19a"/></linearGradient><linearGradient id="f0-l2" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#356b40"/><stop offset="100%" stop-color="#7fc48c"/></linearGradient><linearGradient id="f0h-o" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#c2395f"/><stop offset="55%" stop-color="#f78fac"/><stop offset="100%" stop-color="#ffd6e4"/></linearGradient>
@@ -302,41 +334,74 @@ for(var f=0;f<10;f++){
 }
 
 /* ---- deschidere: GSAP daca e disponibil, altfel fallback CSS ---- */
-var btn=document.getElementById('btn'),msgWrap=document.getElementById('msgWrap'),opened=false;
+var btn=document.getElementById('btn'),msgWrap=document.getElementById('msgWrap'),poem=document.getElementById('poem'),opened=false;
 var flowers=document.querySelectorAll('.fl');
 
 function afterReveal(){
   flowers.forEach(function(el){ el.classList.add('sway'); });
 }
 
-function openWithGSAP(){
-  var tl=gsap.timeline({ onComplete:afterReveal });
-  tl.to(btn,{ scale:0, opacity:0, duration:.45, ease:'back.in(2)' })
-    .call(function(){ burst(60); })
-    .fromTo(flowers,
-      { y:70, scale:.3, opacity:0, rotate:0 },
-      { y:0, scale:1, opacity:1, duration:.9, ease:'elastic.out(1,0.6)',
-        stagger:{ each:0.06, from:'center' } }, '-=0.05')
-    .fromTo(msgWrap, { opacity:0, y:-18 }, { opacity:1, y:0, duration:1, ease:'power2.out' }, '-=0.4');
+function animateCSS(){
+  btn.style.transition='transform .45s cubic-bezier(.6,-.4,.7,0), opacity .45s ease';
+  btn.style.transform='scale(0)';
+  btn.style.opacity='0';
+  burst(60);
+
+  setTimeout(function(){
+    flowers.forEach(function(el){
+      el.classList.add('css-init');
+      void el.offsetWidth;
+      el.classList.add('css-grow');
+    });
+    burst(30);
+  },120);
+
+  setTimeout(function(){
+    msgWrap.style.transition='opacity .9s ease, transform .9s ease';
+    msgWrap.style.opacity='1';
+    msgWrap.style.transform='translateX(-50%) translateY(0)';
+    if(poem){
+      poem.style.transition='opacity 1s ease, transform 1s ease';
+      poem.style.opacity='0';
+      poem.style.transform='translateY(10px)';
+      setTimeout(function(){
+        poem.style.opacity='1';
+        poem.style.transform='translateY(0)';
+      },180);
+    }
+    afterReveal();
+  },700);
 }
 
-function openWithCSS(){
-  btn.style.transition='transform .5s cubic-bezier(.6,-.4,.7,0), opacity .5s ease';
-  btn.style.transform='scale(0)'; btn.style.opacity='0';
-  burst(60);
-  setTimeout(function(){
-    flowers.forEach(function(el){ el.classList.add('css-init'); void el.offsetWidth; el.classList.add('css-grow'); });
-    burst(30);
-  },280);
-  setTimeout(function(){ msgWrap.style.transition='opacity 1s ease, transform 1s ease'; msgWrap.style.opacity='1'; msgWrap.style.transform='translateX(-50%) translateY(0)'; afterReveal(); },900);
+function animateGSAP(){
+  var tl=gsap.timeline({onComplete:afterReveal});
+  tl.to(btn,{scale:0,opacity:0,duration:.45,ease:'back.in(2)'})
+    .call(function(){burst(60);})
+    .fromTo(flowers,{y:70,scale:.3,opacity:0,rotate:0},
+      {y:0,scale:1,opacity:1,duration:.9,ease:'elastic.out(1,.6)',stagger:{each:.06,from:'center'}},'-=.05')
+    .fromTo(msgWrap,{opacity:0,y:-18},{opacity:1,y:0,duration:.9,ease:'power2.out'},'-.4');
+  if(poem){
+    tl.fromTo(poem,{opacity:0,y:10},{opacity:1,y:0,duration:1,ease:'power2.out'},'-.45');
+  }
 }
 
 function openGift(){
-  if(opened) return; opened=true;
-  if(typeof gsap!=='undefined'){ openWithGSAP(); } else { openWithCSS(); }
+  if(opened || !btn) return;
+  opened=true;
+  try{
+    if(window.gsap && typeof window.gsap.timeline==='function') animateGSAP();
+    else animateCSS();
+  }catch(err){
+    console.error('Animation failed, using CSS fallback:',err);
+    animateCSS();
+  }
 }
-btn.addEventListener('click', openGift);
-btn.addEventListener('touchend', function(e){ e.preventDefault(); openGift(); }, {passive:false});
+
+btn.addEventListener('click',openGift);
+btn.addEventListener('pointerup',function(e){
+  if(e.pointerType==='touch') e.preventDefault();
+  openGift();
+});
 })();
 </script>
 </body>
